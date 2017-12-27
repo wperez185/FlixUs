@@ -23,7 +23,7 @@ router.get("/", (req, res) => {
 //   res.sendFile(path.join(__dirname, "../..", "public/settings/profile.html"))
 // })
 
-router.get("/account", requiredLogin, (req, res) => {
+router.get("/my-account", requiredLogin, (req, res) => {
   res.sendFile(path.join(__dirname, "../..", "public/settings/admin.html"))
 })
 

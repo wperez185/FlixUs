@@ -15,6 +15,7 @@ export default class Login extends React.Component {
             <label className="form-label" htmlFor="account-password">Password</label>
             <input className="form-input" id="account-password" type="password" name="password" />
           </form>
+          <button>Submit</button>
         </div>
         <div className="form-caption center">
           <small>Don’t have an account? <Link to="/register">Click here to register.</Link></small>
