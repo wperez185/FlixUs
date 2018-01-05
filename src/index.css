@@ -257,6 +257,10 @@ button {
   /* margin-left: 50%; */
 }
 
+.delete {
+  color: red
+}
+
 .form-wrapper {
   max-width: 22em;
   margin: 0 auto;

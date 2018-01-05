@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {fetchMovies} from './actions';
+import {fetchMovies, userLogout} from './actions';
 
 // Views
 import MovieGrid from './components/MovieGrid';
@@ -16,8 +16,15 @@ export class App extends React.Component {
     this.props.dispatch(fetchMovies());
   }
 
+  logOut() {
+    console.log('log out called')
+  }
+
   render() {
     let content;
+    const { dispatch, user } = this.props;
+    const token = user ? user.token : null;
+    console.log('token -> ', token)
 
     // Get view based on current route
     switch (this.props.location.pathname) {
@@ -30,7 +37,7 @@ export class App extends React.Component {
         content = (<MyMovies {...this.props} />);
         break;
       case '/my-account':
-        content = (<MyAccount {...this.props} />);
+        content = token ? (<MyAccount {...this.props} />) : null;
         break;
       case '/login':
         content = (<Login {...this.props} />);
@@ -50,13 +57,21 @@ export class App extends React.Component {
         <header className="header">
           <div className="wrapper">
             <div className="header-login">
-              <NavLink to="/login" className="nav-link">
-                Login
-              </NavLink>
-              /
-              <NavLink to="/register" className="nav-link">
-                Register
-              </NavLink>
+              {token ?
+                <NavLink to="/" className="nav-link" onClick={() => dispatch(userLogout())}>
+                  Logout
+                </NavLink>
+              :
+              <div>
+                <NavLink to="/login" className="nav-link">
+                  Login
+                </NavLink>
+                /
+                <NavLink to="/register" className="nav-link">
+                  Register
+                </NavLink>
+              </div>
+            }
             </div>
             <div className="logo-wrapper">
               <NavLink className="logo" to="/">
@@ -67,8 +82,8 @@ export class App extends React.Component {
               <ul className="nav-list">
                 <li className="nav-item"><NavLink to="/" exact className="nav-link">Just Released</NavLink></li>
                 <li className="nav-item"><NavLink to="/top-picks" className="nav-link">Top Picks</NavLink></li>
-                <li className="nav-item"><NavLink to="/my-movies" className="nav-link">My Movies</NavLink></li>
-                <li className="nav-item"><NavLink to="/my-account" className="nav-link">My Account</NavLink></li>
+                { token ? <li className="nav-item"><NavLink to="/my-movies" className="nav-link">My Movies</NavLink></li> : null }
+                { token ? <li className="nav-item"><NavLink to="/my-account" className="nav-link">My Account</NavLink></li> : null }
               </ul>
             </nav>
           </div>
@@ -87,7 +102,8 @@ const mapStateToProps = state => ({
   movies: state.movies,
   myMovies: state.myMovies,
   loading: state.loading,
-  error: state.error
+  error: state.error,
+  user: state.user
 });
 
 export default withRouter(connect(mapStateToProps)(App));

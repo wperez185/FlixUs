@@ -1,4 +1,8 @@
 import fetch from 'cross-fetch';
+import axios from 'axios';
+
+// set axios base url
+axios.defaults.baseURL = 'http://localhost:8080';
 
 // TMDB API key:
 // https://www.themoviedb.org/settings/api
@@ -95,24 +99,118 @@ export const removeFromMyMovies = (movie) => ({
 });
 
 
-
-// TODO: User actions:
 export const USER_REGISTER = 'USER_REGISTER';
-export const userRegister = (name, email, password) => ({
-  type: USER_REGISTER,
-  name: name,
-  email: email,
-  password: password
-});
+export const userRegister = (username, password, history) => {
+  return (dispatch) => {
+    axios({
+      method: 'post',
+      data: {
+        username,
+        password
+      },
+      url: '/api/users/register',
+    }).then(response => {
+      if (response.status === 201) {
+        const { user } = response.data;
+        history.push('/')
+        localStorage.setItem('app_user', JSON.stringify(user));
+        dispatch({
+          type: USER_REGISTER,
+          user
+        });
+      }
+    }).catch(err => {
+      const status = err.response ? err.response.status : 500;
+      switch(status) {
+        case 404: {
+          console.log('User not found: ', err.response.data);
+          break;
+        }
+        case 401: {
+          console.log('User is unauthorized: ', err.response.data);
+          break;
+        }
+        case 422: {
+          console.log('Missing field: ', err.response.data)
+          break;
+        }
+        default: {
+          console.log('Server error occured');
+          break;
+        }
+      }
+    });
+  };
+};
+
+export const DELETE_USER = "DELETE_USER";
+export const deleteAccount = (token, id, history) => {
+  return (dispatch) => {
+    axios({
+      method: 'delete',
+      headers: {'Authorization': token },
+      url: `api/users/${id}`
+    }).then(response => {
+      if (response.status === 204) {
+        dispatch({ type: DELETE_USER })
+        history.push('/')
+      }
+    }).catch(err => {
+      console.log('Error occured when deleting: ', err)
+    })
+  };
+};
 
 export const USER_LOGIN = 'USER_LOGIN';
-export const userLogin = (email, password) => ({
-  type: USER_LOGIN,
-  email: email,
-  password: password
-});
+export const userLogin = (username, password, history) => {
+  return (dispatch) => {
+    axios({
+      method: 'post',
+      data: {
+        username,
+        password
+      },
+      url: '/api/users/login',
+    }).then(response => {
+      if (response.status === 200) {
+        history.push('/');
+        const { user } = response.data;
+        localStorage.setItem('app_user',JSON.stringify(user));
+        dispatch({
+          type: USER_LOGIN,
+          user
+        });
+      }
+    }).catch(err => {
+      const status = err.response ? err.response.status : 500;
+      switch(status) {
+        case 404: {
+          console.log('User not found: ', err.response.data);
+          break;
+        }
+        case 401: {
+          console.log('User is unauthorized: ', err.response.data);
+          break;
+        }
+        case 422: {
+          console.log('Missing field: ', err.response.data)
+          break;
+        }
+        default: {
+          console.log('Server error occured');
+          break;
+        }
+      }
+    });
+  };
+};
 
 export const USER_LOGOUT = 'USER_LOGOUT';
-export const userLogout = () => ({
-  type: USER_LOGOUT
-});
+export const userLogout = () => {
+  return (dispatch) => {
+    localStorage.removeItem('app_user');
+    dispatch({
+      type: USER_LOGOUT
+    });
+  };
+};

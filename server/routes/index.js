@@ -9,38 +9,15 @@ function requiredLogin(req, res, next){
     next();
   }
 }
+
 router.get('/logout', function(req, res) {
  req.session.authenticated = false
  req.session.destroy();
  return res.redirect('/')
 })
 
-router.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../..", "public/index.html"))
-})
-
-// router.get("/profile",requiredLogin, (req, res) => {
-//   res.sendFile(path.join(__dirname, "../..", "public/settings/profile.html"))
-// })
-
-router.get("/my-account", requiredLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "../..", "public/settings/admin.html"))
-})
-
-router.get("/signup", (req, res) => {
-  res.sendFile(path.join(__dirname, "../..", "public/settings/signup.html"))
-})
-
-router.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "../..", "public/settings/login.html"))
-})
-
-router.get("/forgotPassword", (req, res) => {
-  res.sendFile(path.join(__dirname, "../..", "public/forgotPassword.html"))
-})
-
-router.get("/resetPassword", (req, res) => {
-  res.sendFile(path.join(__dirname, "../..", "public/resetPassword.html"))
+router.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../..', 'build/index.html'))
 })
 
 module.exports = router;

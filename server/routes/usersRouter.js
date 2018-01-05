@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
 const {User} = require("../models/usersModels");
+const { generateToken, validateToken } = require('../helpers/auth')
 
 const router = express.Router();
 const jsonParser = bodyParser.json();
@@ -12,6 +14,9 @@ router.post('/:confirmationGUID', jsonParser, (req, res) => {
 
 })
 */
+
+const jwtSecret = process.env.JWT_SECRET || 'some-random-secret-key';
+
 router.post('/forgotPassword/:username', jsonParser, (req, res) => {
     let username = req.params.username;
     let confirmationGUID = uuidv4();
@@ -76,10 +81,11 @@ router.post('/resetPassword/:guid', jsonParser, (req, res) => {
       });
 })
 
+// /api/users/login
 router.post('/login', jsonParser, (req, res) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
-console.log("test");
+  console.log("test");
   if (missingField) {
     return res.status(422).json({
       code: 422,
@@ -114,13 +120,14 @@ console.log("test");
         userId = user._id;
         return user.validatePassword(password)
         .then(value => {
-          console.log(value);
+          const token = generateToken({ id: userId, username});
           if (value){
             req.session.user = userId;
-            return res.status(201).json({
-              code: 201,
+            return res.status(200).json({
+              code: 200,
               reason: 'Success',
               message: userId,
+              user: { id: userId, username, password, token },
               location: nonStringField
             });
           } else {
@@ -155,7 +162,8 @@ console.log("test");
 });
 
 // Post to register a new user
-router.post('/', jsonParser, (req, res) => {
+// /api/users/register
+router.post('/register', jsonParser, (req, res) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
   console.log(req.body);
@@ -210,10 +218,22 @@ router.post('/', jsonParser, (req, res) => {
           password: hash
         })
     })
-    .then(user => {
-      return res.status(201).json({message: 'User created successfully', status: "success"});
+    .then(newUser => {
+      console.log('registered user -> ', newUser)
+      const token = generateToken({ id: newUser._id, username: newUser.username });
+      return res.status(201).json({
+        message: 'User created successfully',
+        status: "success",
+        user: {
+          id: newUser._id,
+          username,
+          password,
+          token
+        }
+      });
     })
     .catch(err => {
+      console.log(err);
       // Forward validation errors on to the client, otherwise give a 500
       // error because something unexpected has happened
       if (err.reason === 'ValidationError') {
@@ -280,12 +300,14 @@ router.put('/:id', jsonParser, (req, res) => {
   .catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateToken, (req, res) => {
+  console.log('delete route hit')
   User
     .findByIdAndRemove(req.params.id)
     .exec()
     .then(() => {
       res.status(204).json({message: 'success'});
+      localStorage.removeItem('app_user');
     })
     .catch(err => {
       console.error(err);

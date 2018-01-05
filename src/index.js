@@ -6,7 +6,6 @@ import App from './App';
 import store from './stores';
 import './index.css';
 
-// https://redux.js.org/docs/advanced/UsageWithReactRouter.html
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
@@ -17,6 +16,7 @@ ReactDOM.render(
           <Route path="/my-movies" />
           <Route path="/my-account" />
           <Route path="/login" />
+          <Route path="/logout" />
           <Redirect to="/" />
         </Switch>
       </App>

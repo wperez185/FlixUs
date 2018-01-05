@@ -48,27 +48,8 @@ app.use(passport.initialize());
 
 app.use('/api/users', usersRouter);
 app.use('/', index);
-// app.use('/api/auth/', authRouter);
+// app.use('*', index);
 
-
-// A protected endpoint which needs a valid JWT to access it
-// app.get('/api/github',(req, res) => {
-//   var url = 'https://jobs.github.com/positions.json?description=python&location=new+york';
-//
-// http.get(url, function(res) {
-// var fbResponse = JSON.parse(res)
-// console.log("Got response: " + fbResponse.picture);
-// }).on('error', function(e) {
-// console.log("Got error: " + e.message);
-// });
-// });
-
-app.use('*', (req, res) => {
-  return res.status(404).json({message: 'Not Found'});
-});
-
-// Referenced by both runServer and closeServer. closeServer
-// assumes runServer has run and set `server` to a server object
 let server;
 
 function runServer() {

@@ -4,7 +4,12 @@
 
 ```
 npm install
-npm run start
+# Start database
+mongod
+# Start back-end server
+npm run start (aka `nodemon server.js`)
+# Start React app (aka `react-scripts start`)
+npm run start-react
 ```
 
 - Open http://localhost:3000
