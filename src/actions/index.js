@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch';
 import axios from 'axios';
 
+
 // set axios base url
 axios.defaults.baseURL = 'http://localhost:8080';
 
@@ -140,6 +141,28 @@ export const userRegister = (username, password, history) => {
         }
       }
     });
+  };
+};
+
+export const UPDATE_USER = "UPDATE_USER";
+export const updateAccount = (token, id, username, password) => {
+  return (dispatch) => {
+    axios({
+      method: 'put',
+      headers: {'Authorization': token },
+      url: `api/users/${id}`,
+      data: {
+        username: username,
+        password: password
+      }
+    }).then(response => {
+      if (response.status === 200) {
+        dispatch({ type: UPDATE_USER })
+
+      }
+    }).catch(err => {
+      console.log('Error occured when updating: ', err)
+    })
   };
 };
 

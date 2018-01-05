@@ -260,45 +260,68 @@ router.get('/:userId', (req, res) => {
       res.status(500).json({message: 'Internal server error'})});
 });
 
-router.put('/:id', jsonParser, (req, res) => {
-  const requiredFields = ['id'];
-  for (let i = 0; i < requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`
-      console.error(message);
-      return res.status(400).send(message);
-    }
-  }
-  if (req.params.id !== req.body.id) {
-    const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
-    console.error(message);
-    return res.status(400).send(message);
-  }
-  console.log(`Updating blog post \`${req.params.id}\``);
+// router.put('/:id', jsonParser, (req, res) => {
+//   const requiredFields = ['id'];
+//   for (let i = 0; i < requiredFields.length; i++) {
+//     const field = requiredFields[i];
+//     if (!(field in req.body)) {
+//       const message = `Missing \`${field}\` in request body`
+//       console.error(message);
+//       return res.status(400).send(message);
+//     }
+//   }
+//   if (req.params.id !== req.body.id) {
+//     const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
+//     console.error(message);
+//     return res.status(400).send(message);
+//   }
+//   console.log(`Updating blog post \`${req.params.id}\``);
+//   let obj = {};
+//   if(req.body.firstName){
+//     obj.firstName = req.body.firstName;
+//   }
+//   if(req.body.lastName){
+//     obj.lastName = req.body.lastName;
+//   }
+//   if(req.body.city){
+//     obj.city = req.body.city;
+//   }
+//   if(req.body.state){
+//     obj.state = req.body.state;
+//   }
+//   if(req.body.zipcode){
+//     obj.zipcode = req.body.zipcode;
+//   }
+//   User.findByIdAndUpdate(req.params.id, {$set:obj
+// },{new: true})
+//   .then(jobPosts =>{
+//     console.log(jobPosts);
+//     res.status(204).end()})
+//   .catch(err => res.status(500).json({message: 'Internal server error'}));
+// });
+
+router.put('/:id', validateToken, jsonParser, (req, res) => {
+  console.log(req.body);
   let obj = {};
-  if(req.body.firstName){
-    obj.firstName = req.body.firstName;
+  if(req.body.username){
+    obj.username = req.body.username;
   }
-  if(req.body.lastName){
-    obj.lastName = req.body.lastName;
+  if(req.body.password){
+    obj.password = req.body.password;
   }
-  if(req.body.city){
-    obj.city = req.body.city;
-  }
-  if(req.body.state){
-    obj.state = req.body.state;
-  }
-  if(req.body.zipcode){
-    obj.zipcode = req.body.zipcode;
-  }
-  User.findByIdAndUpdate(req.params.id, {$set:obj
-},{new: true})
-  .then(jobPosts =>{
-    console.log(jobPosts);
-    res.status(204).end()})
-  .catch(err => res.status(500).json({message: 'Internal server error'}));
+  console.log('update route hit')
+  User
+    .findByIdAndUpdate(req.params.id, {$set:obj
+  },{new: true})
+    .then(() => {
+      res.status(200).json({message: 'success'});
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({error: 'something went terribly wrong'});
+    });
 });
+
 
 router.delete('/:id', validateToken, (req, res) => {
   console.log('delete route hit')
