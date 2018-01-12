@@ -6,18 +6,21 @@ import {
   USER_REGISTER,
   USER_LOGIN,
   USER_LOGOUT,
-  DELETE_USER
+  DELETE_USER,
+  UPDATE_USER
 } from '../actions';
 
 const initialState = {
   error: null,
   loading: false,
   movies: [],
+  updateProfileData: false,
   featuredTop: { full_backdrop_path: null, title: null, overview: null },
   featuredBottom: { full_backdrop_path: null, title: null, overview: null },
   myMovies: [],
   user: JSON.parse(localStorage.getItem('app_user'))
 };
+
 
 
 export function movieReducer(state=initialState, action) {
@@ -68,13 +71,16 @@ export function movieReducer(state=initialState, action) {
         user: null
       });
     }
-    case USER_LOGIN: 
+    case USER_LOGIN:
     case USER_REGISTER: {
       const user = action.user;
       return Object.assign({}, state, { user });
     }
     case DELETE_USER: {
       return Object.assign({}, state, { user: null });
+    }
+    case UPDATE_USER: {
+      return Object.assign({}, state, { updateProfileData: true });
     }
     default:
       break;

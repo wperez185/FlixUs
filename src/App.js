@@ -2,6 +2,7 @@ import React from 'react';
 import {NavLink, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {fetchMovies, userLogout} from './actions';
+import ToastrContainer from 'react-toastr-basic';
 
 // Views
 import MovieGrid from './components/MovieGrid';
@@ -54,6 +55,7 @@ export class App extends React.Component {
 
     return (
       <div className="App">
+      <ToastrContainer/>
         <header className="header">
           <div className="wrapper">
             <div className="header-login">
@@ -103,7 +105,8 @@ const mapStateToProps = state => ({
   myMovies: state.myMovies,
   loading: state.loading,
   error: state.error,
-  user: state.user
+  user: state.user,
+  updateProfileData: state.updateProfileData
 });
 
 export default withRouter(connect(mapStateToProps)(App));

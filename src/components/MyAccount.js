@@ -1,12 +1,20 @@
 import React from 'react';
 import { updateAccount,deleteAccount } from '../actions'
+import {Toast} from 'react-toastr-basic';
 
 export default class MyAccount extends React.Component {
   constructor() {
     super();
     this.handleInputChange = this.handleInputChange.bind(this);
   }
-
+  componentWillUpdate() {
+    console.log('this.props -> ', this.props);
+  }
+  componentWillReceiveProps(){
+    if(this.props.updateProfileData){
+      Toast("Profile has been updated");
+    }
+  }
   componentWillMount() {
     console.log('this.props -> ', this.props)
     const { id, username, password, token } = this.props.user
@@ -16,6 +24,11 @@ export default class MyAccount extends React.Component {
       password,
       token
     })
+  }
+  componentDidUpdate(){
+    if(this.props.updateProfileData){
+      Toast("Profile has been updated");
+    }
   }
 
   handleInputChange(event) {

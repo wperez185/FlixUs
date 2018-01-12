@@ -158,7 +158,7 @@ export const updateAccount = (token, id, username, password) => {
     }).then(response => {
       if (response.status === 200) {
         dispatch({ type: UPDATE_USER })
-
+          
       }
     }).catch(err => {
       console.log('Error occured when updating: ', err)

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {removeFromMyMovies} from '../actions';
+import {Toast} from 'react-toastr-basic';
 
 export default class Home extends React.Component {
   removeFromMyMovies(event, movie) {
