@@ -147,7 +147,7 @@ export const userRegister = (username, password, history) => {
 export const UPDATE_USER = "UPDATE_USER";
 export const updateAccount = (token, id, username, password) => {
   return (dispatch) => {
-    axios({
+    return axios({
       method: 'put',
       headers: {'Authorization': token },
       url: `api/users/${id}`,
@@ -157,12 +157,16 @@ export const updateAccount = (token, id, username, password) => {
       }
     }).then(response => {
       if (response.status === 200) {
-        dispatch({ type: UPDATE_USER })
-          
+        
+        let tempUser = JSON.parse(localStorage.getItem('app_user'));
+        tempUser.username = username;
+        tempUser.password = password;
+        localStorage.setItem('app_user', JSON.stringify(tempUser));
+        dispatch({ type: UPDATE_USER });
       }
     }).catch(err => {
       console.log('Error occured when updating: ', err)
-    })
+    });
   };
 };
 

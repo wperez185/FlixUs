@@ -7,16 +7,8 @@ export default class MyAccount extends React.Component {
     super();
     this.handleInputChange = this.handleInputChange.bind(this);
   }
-  componentWillUpdate() {
-    console.log('this.props -> ', this.props);
-  }
-  componentWillReceiveProps(){
-    if(this.props.updateProfileData){
-      Toast("Profile has been updated");
-    }
-  }
   componentWillMount() {
-    console.log('this.props -> ', this.props)
+    // console.log('this.props -> ', this.props)
     const { id, username, password, token } = this.props.user
     this.setState({
       id,
@@ -24,11 +16,6 @@ export default class MyAccount extends React.Component {
       password,
       token
     })
-  }
-  componentDidUpdate(){
-    if(this.props.updateProfileData){
-      Toast("Profile has been updated");
-    }
   }
 
   handleInputChange(event) {
@@ -42,7 +29,14 @@ export default class MyAccount extends React.Component {
       <div className="MyAccount">
         <h1 className="center">My Account</h1>
         <div className="form-wrapper">
-          <form className="form" onSubmit={(event) => {event.preventDefault(); dispatch(updateAccount(token, id, username, password))}}>
+          <form className="form" onSubmit={(event) => {
+            event.preventDefault();
+            dispatch(updateAccount(token, id, username, password))
+              .then(() => {
+                Toast("Profile has been updated");
+                console.log('it worked!', arguments);
+              });
+          }}>
             {/* Username */}
             <label className="form-label" htmlFor="username">Username</label>
             <input className="form-input" id="username" type="text" name="username" onChange={this.handleInputChange} value={username} />

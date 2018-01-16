@@ -48,6 +48,9 @@ export function movieReducer(state=initialState, action) {
       if (myMovies.map(m => m.title).indexOf(action.movie.title) < 0) {
         console.log('add!');
         myMovies = myMovies.concat(action.movie);
+
+        // TODO: Toast Me Here™
+
         // TODO: Save myMovies to user database
         // callDatabase().then(return new state object);
       }

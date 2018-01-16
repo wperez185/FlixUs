@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { userLogin } from '../actions'
-import {Toast} from 'react-toastr-basic';
 
 export default class Login extends React.Component {
 
