@@ -9,6 +9,7 @@ import {
   DELETE_USER,
   UPDATE_USER
 } from '../actions';
+import {Toast} from 'react-toastr-basic';
 
 const initialState = {
   error: null,
@@ -18,9 +19,10 @@ const initialState = {
   featuredTop: { full_backdrop_path: null, title: null, overview: null },
   featuredBottom: { full_backdrop_path: null, title: null, overview: null },
   myMovies: [],
+  loggedIn: false,
+  user: { name: '', email: '', movies: [] },
   user: JSON.parse(localStorage.getItem('app_user'))
 };
-
 
 
 export function movieReducer(state=initialState, action) {
@@ -49,10 +51,13 @@ export function movieReducer(state=initialState, action) {
         console.log('add!');
         myMovies = myMovies.concat(action.movie);
 
-        // TODO: Toast Me Here™
+
+        Toast("Movie Added to My Movies");
 
         // TODO: Save myMovies to user database
         // callDatabase().then(return new state object);
+
+
       }
 
       return Object.assign({}, state, {
