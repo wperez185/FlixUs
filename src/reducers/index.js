@@ -21,7 +21,7 @@ const initialState = {
   myMovies: [],
   loggedIn: false,
   user: { name: '', email: '', movies: [] },
-  user: JSON.parse(localStorage.getItem('app_user'))
+  userInfo: JSON.parse(localStorage.getItem('app_user'))
 };
 
 
