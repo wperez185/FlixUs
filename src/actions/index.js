@@ -3,8 +3,11 @@ import axios from 'axios';
 
 
 // set axios base url
-axios.defaults.baseURL = 'http://localhost:8080';
 
+axios.defaults.baseURL = process.env.API_URL || 'http://localhost:8080';
+if(process.env.NODE_ENV==='production') {
+  axios.defaults.baseURL = 'https://lit-caverns-59843.herokuapp.com/';
+} 
 // TMDB API key:
 // https://www.themoviedb.org/settings/api
 const API_KEY = 'cc6d2c6b137405f0457b9bdb5863c4ef';
@@ -157,7 +160,7 @@ export const updateAccount = (token, id, username, password) => {
       }
     }).then(response => {
       if (response.status === 200) {
-        
+
         let tempUser = JSON.parse(localStorage.getItem('app_user'));
         tempUser.username = username;
         tempUser.password = password;
