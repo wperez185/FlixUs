@@ -287,3 +287,59 @@ button {
 .form-caption {
   margin-top: 2em;
 }
+
+/* Mobile: Shrink header/nav font so it all stays on one line */
+@media (max-width: 440px) {
+  .header-login,
+  .nav-list {
+    font-size: 0.65em;
+  }
+  .header-login {
+    margin-bottom: 1em;
+  }
+}
+
+/* Desktop: Show top half of the featured movie poster */
+.featured-image > img {
+  object-position: 50% 10%;
+}
+
+/* Mobile: Stack featured content below image */
+@media (max-width: 800px) {
+  .featured {
+    display: block;
+    padding: 0;
+  }
+
+  .featured-image {
+    height: 200px;
+  }
+
+  .featured-image > img {
+    object-position: center top;
+  }
+
+  .featured-content {
+    margin-right: 0;
+  }
+
+  .featured-content::before {
+    position: absolute;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: calc(100% + 120px);
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #000), to(transparent));
+    background: -webkit-linear-gradient(bottom, #000 50%, transparent);
+    background: -o-linear-gradient(bottom, #000 50%, transparent 100%);
+    background: linear-gradient(0deg, #000 50%, transparent);
+    content: "";
+  }
+}
+
+/* Desktop and Mobile: Auto-fill grid with posters 150–200px wide, centered */
+.movie-grid {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 200px));
+  justify-content: center;
+}
