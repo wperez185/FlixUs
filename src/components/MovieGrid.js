@@ -40,7 +40,7 @@ export default class Home extends React.Component {
       </li>
     ));
 
-    return <div className="wrapper-desc"><h1 className="title">How FlixUS Works</h1><p className="desc">Login or register, then pick movies you want to follow and learn more about.</p><ul className="movie-grid">{movies}</ul></div>;
+    return <div className="wrapper-desc"><h1 className="title">How FlixUs Works</h1><p className="desc">Login or register, then pick movies you want to follow and learn more about.</p><ul className="movie-grid">{movies}</ul></div>;
   }
 
   render(props) {
