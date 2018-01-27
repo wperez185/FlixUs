@@ -1,15 +1,15 @@
 import {
   REQUEST_MOVIES,
   RECEIVE_MOVIES,
-  ADD_TO_MY_MOVIES,
-  REMOVE_FROM_MY_MOVIES,
+  ADD_TO_MY_MOVIES_SUCCESS,
+  REMOVE_FROM_MY_MOVIES_SUCCESS,
   USER_REGISTER,
   USER_LOGIN,
   USER_LOGOUT,
   DELETE_USER,
   UPDATE_USER
 } from '../actions';
-import {Toast} from 'react-toastr-basic';
+
 
 const initialState = {
   error: null,
@@ -18,7 +18,6 @@ const initialState = {
   updateProfileData: false,
   featuredTop: { full_backdrop_path: null, title: null, overview: null },
   featuredBottom: { full_backdrop_path: null, title: null, overview: null },
-  myMovies: [],
   loggedIn: false,
   user: { name: '', email: '', movies: [] },
   userInfo: JSON.parse(localStorage.getItem('app_user'))
@@ -43,34 +42,16 @@ export function movieReducer(state=initialState, action) {
       });
     // My Movies: Add movie
     }
-    case ADD_TO_MY_MOVIES: {
-      let myMovies = state.myMovies;
-
-      // Only add movie if it isn't already
-      if (myMovies.map(m => m.title).indexOf(action.movie.title) < 0) {
-        console.log('add!');
-        myMovies = myMovies.concat(action.movie);
-
-
-        Toast("Movie Added to My Movies");
-
-        // TODO: Save myMovies to user database
-        // callDatabase().then(return new state object);
-
-
-      }
-
+    case ADD_TO_MY_MOVIES_SUCCESS: {
       return Object.assign({}, state, {
-        myMovies: myMovies,
+        user: action.user,
         loading: false
       });
     }
-    // My Movies: Remove movie
-    case REMOVE_FROM_MY_MOVIES: {
-      let myMovies = state.myMovies.filter(m => m.title !== action.movie.title);
-      // TODO: Save myMovies to user database
+    // Remove movie
+    case REMOVE_FROM_MY_MOVIES_SUCCESS: {
       return Object.assign({}, state, {
-        myMovies: myMovies,
+        user: action.user,
         loading: false
       });
     }

@@ -5,7 +5,7 @@ import {addToMyMovies} from '../actions';
 export default class Home extends React.Component {
   addToMyMovies(event, movie) {
     event.preventDefault();
-    this.props.dispatch(addToMyMovies(movie));
+    this.props.dispatch(addToMyMovies(movie, this.props.user));
   }
 
   renderFeatured(movie) {
@@ -21,7 +21,7 @@ export default class Home extends React.Component {
           <p className="featured-description">
             {movie.overview}
           </p>
-          <button className="button" type="button"
+          <button className="button button-light" type="button"
             onClick={event => this.addToMyMovies(event, movie)}>
             Add to My Movies
           </button>
@@ -40,7 +40,7 @@ export default class Home extends React.Component {
       </li>
     ));
 
-    return <ul className="movie-grid">{movies}</ul>;
+    return <div className="wrapper-desc"><h1 className="title">How FlixUS Works</h1><p className="desc">Login or register, then pick movies you want to follow and learn more about.</p><ul className="movie-grid">{movies}</ul></div>;
   }
 
   render(props) {

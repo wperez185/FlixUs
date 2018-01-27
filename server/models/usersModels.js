@@ -12,13 +12,19 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  movies: {
+    type: String,
+    required: true,
+    default: "[]"
   }
 });
 
 UserSchema.methods.apiRepr = function() {
   return {
     id: this._id || '',
-    username: this.username || ''
+    username: this.username || '',
+    movies: this.movies || '[]'
   };
 }
 

@@ -36,7 +36,16 @@ a:hover {
   margin: 0 auto;
 }
 
+.wrapper-desc {
+  text-align: center;
+}
 
+p.desc {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  text-align: center;
+}
 
 .header {
   border-top: 1em solid #000;

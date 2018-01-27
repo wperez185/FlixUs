@@ -6,11 +6,11 @@ import {Toast} from 'react-toastr-basic';
 export default class Home extends React.Component {
   removeFromMyMovies(event, movie) {
     event.preventDefault();
-    this.props.dispatch(removeFromMyMovies(movie));
+    this.props.dispatch(removeFromMyMovies(movie, this.props.user));
   }
 
   renderResults() {
-    const movies = this.props.myMovies.map((movie, index) => (
+    const movies = this.props.user.movies.map((movie, index) => (
       <li className="movie-grid-item" key={index}>
         <button className="movie" type="button" data-text="Remove from My Movies"
           onClick={event => this.removeFromMyMovies(event, movie)}>
@@ -28,7 +28,7 @@ export default class Home extends React.Component {
         <h1 className="center">My Movies</h1>
         <div className="MovieGrid">
           <div className="wrapper">
-            { this.props.myMovies.length ?
+            { this.props.user.movies.length ?
               this.renderResults() :
               (<div className="center">
                 You haven’t added any movies yet.<br/><br/>

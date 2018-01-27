@@ -25,7 +25,7 @@ export class App extends React.Component {
     let content;
     const { dispatch, user } = this.props;
     const token = user ? user.token : null;
-    console.log('token -> ', token)
+  
 
     // Get view based on current route
     switch (this.props.location.pathname) {
@@ -102,7 +102,6 @@ const mapStateToProps = state => ({
   featuredTop: state.featuredTop,
   featuredBottom: state.featuredBottom,
   movies: state.movies,
-  myMovies: state.myMovies,
   loading: state.loading,
   error: state.error,
   user: state.user,

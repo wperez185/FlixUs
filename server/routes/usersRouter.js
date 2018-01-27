@@ -127,7 +127,7 @@ router.post('/login', jsonParser, (req, res) => {
               code: 200,
               reason: 'Success',
               message: userId,
-              user: { id: userId, username, password, token },
+              user: { id: userId, username, password, token, movies: user.movies },
               location: nonStringField
             });
           } else {
@@ -221,15 +221,17 @@ router.post('/register', jsonParser, (req, res) => {
     .then(newUser => {
       console.log('registered user -> ', newUser)
       const token = generateToken({ id: newUser._id, username: newUser.username });
+      // newUser.token = token;
       return res.status(201).json({
         message: 'User created successfully',
         status: "success",
         user: {
           id: newUser._id,
+          movies: newUser.movies,
           username,
           password,
           token
-        }
+}
       });
     })
     .catch(err => {
@@ -259,6 +261,86 @@ router.get('/:userId', (req, res) => {
       console.log(err);
       res.status(500).json({message: 'Internal server error'})});
 });
+
+// /api/users/add-movie
+router.post('/add-movie', jsonParser, (req, res) => {
+
+  let {movie, id} = req.body;
+  console.log("ID", id);
+  return User
+    .findById(id)
+    .then(results => {
+      if (results) {
+        let user = results;
+        let newMovies = JSON.parse(user.movies);
+        // Add movie to movies array
+        newMovies = newMovies.concat(movie);
+        user.movies = JSON.stringify(newMovies);
+        user.save().then(user => {
+          return res.status(201).json({
+            id: user._id,
+            movies: user.movies,
+            username: user.username,
+            password: user.password
+  });
+        });
+      } else {
+        return res.status(401).json({
+          code: 401,
+          reason: 'ValidationError',
+          message: 'User not found'
+        });
+      }
+    })
+    .catch(err => {
+      // Forward validation errors on to the client, otherwise give a 500
+      // error because something unexpected has happened
+      if (err.reason === 'ValidationError') {
+        return res.status(err.code).json(err);
+      }
+      res.status(500).json({code: 500, message: 'Internal server error'});
+    });
+});
+
+// /api/users/remove-movie
+router.post('/remove-movie', jsonParser, (req, res) => {
+  let {movie, id} = req.body;
+
+  return User
+    .findById(id)
+    .then(results => {
+      if (results) {
+        let user = results;
+        let newMovies = JSON.parse(user.movies);
+        // Remove movie from movies array
+        newMovies = newMovies.filter(m => m.title !== movie.title);
+        user.movies = JSON.stringify(newMovies);
+        user.save().then(user => {
+          return res.status(201).json({
+            id: user._id,
+            movies: user.movies,
+            username: user.username,
+            password: user.password
+  });
+        });
+      } else {
+        return res.status(401).json({
+          code: 401,
+          reason: 'ValidationError',
+          message: 'User not found'
+        });
+      }
+    })
+    .catch(err => {
+      // Forward validation errors on to the client, otherwise give a 500
+      // error because something unexpected has happened
+      if (err.reason === 'ValidationError') {
+        return res.status(err.code).json(err);
+      }
+      res.status(500).json({code: 500, message: 'Internal server error'});
+    });
+});
+
 
 // router.put('/:id', jsonParser, (req, res) => {
 //   const requiredFields = ['id'];
