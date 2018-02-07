@@ -136,7 +136,7 @@ export const addToMyMovies = (movie, user) => {
     // TODO: Toast error messages
     reject(err.response.data);
   });
-
+});
 
     return addMovie.then(user => {
       dispatch(addToMyMoviesSuccess(movie, user));
@@ -144,6 +144,7 @@ export const addToMyMovies = (movie, user) => {
     });
   };
 };
+
 
 export const REMOVE_FROM_MY_MOVIES_SUCCESS = 'REMOVE_FROM_MY_MOVIES_SUCCESS';
 export const removeFromMyMoviesSuccess = (movie, user) => ({
@@ -182,6 +183,7 @@ export const removeFromMyMovies = (movie, user) => {
   }).catch(err => {
     // TODO: Toast error messages
     reject(err.response.data);
+  });
   });
 
 
