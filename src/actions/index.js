@@ -120,7 +120,7 @@ export const addToMyMovies = (movie, user) => {
     const addMovie = new Promise((resolve, reject) => {
       axios('/api/users/add-movie', {
         method: 'POST',
-        body: JSON.stringify(data),
+        data: data,
         headers: { 'Content-Type': 'application/json', 'Authorization': token },
         withCredentials: true
       })
@@ -167,7 +167,7 @@ export const removeFromMyMovies = (movie, user) => {
     const removeMovie = new Promise((resolve, reject) => {
       axios('/api/users/remove-movie', {
         method: 'POST',
-        body: JSON.stringify(data),
+        data: data,
         headers: { 'Content-Type': 'application/json', 'Authorization': token },
         withCredentials: true
       })
