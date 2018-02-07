@@ -124,7 +124,6 @@ export const addToMyMovies = (movie, user) => {
         headers: { 'Content-Type': 'application/json', 'Authorization': token },
         withCredentials: true
       })
-      .then(response => response.json())
       .then(json => {
         if (typeof json.code !== 'undefined' && json.code >= 400) {
           reject(json.message);
@@ -171,7 +170,6 @@ export const removeFromMyMovies = (movie, user) => {
         headers: { 'Content-Type': 'application/json', 'Authorization': token },
         withCredentials: true
       })
-      .then(response => response.json())
       .then(json => {
         if (typeof json.code !== 'undefined' && json.code >= 400) {
           reject(json.message);
