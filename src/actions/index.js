@@ -123,19 +123,20 @@ export const addToMyMovies = (movie, user) => {
         data: data,
         headers: { 'Content-Type': 'application/json', 'Authorization': token },
         withCredentials: true
-      })
-      .then(json => {
-        if (typeof json.code !== 'undefined' && json.code >= 400) {
-          reject(json.message);
-        } else {
-          if (typeof json.movies === 'string') {
-            json.movies = JSON.parse(json.movies);
-          }
-          json.token = token;
-          resolve(json);
-        }
-      });
-    });
+      }).then(response => {
+    if (response.status === 201) {
+      const { user } = response.data;
+      if (typeof user.movies === 'string') {
+        user.movies = JSON.parse(user.movies);
+      }
+      user.token = token;
+      resolve(user);
+    }
+  }).catch(err => {
+    // TODO: Toast error messages
+    reject(json.message);
+  });
+
 
     return addMovie.then(user => {
       dispatch(addToMyMoviesSuccess(movie, user));
@@ -169,19 +170,20 @@ export const removeFromMyMovies = (movie, user) => {
         data: data,
         headers: { 'Content-Type': 'application/json', 'Authorization': token },
         withCredentials: true
-      })
-      .then(json => {
-        if (typeof json.code !== 'undefined' && json.code >= 400) {
-          reject(json.message);
-        } else {
-          if (typeof json.movies === 'string') {
-            json.movies = JSON.parse(json.movies);
-          }
-          json.token = token;
-          resolve(json);
-        }
-      });
-    });
+      }).then(response => {
+    if (response.status === 201) {
+      const { user } = response.data;
+      if (typeof user.movies === 'string') {
+        user.movies = JSON.parse(user.movies);
+      }
+      user.token = token;
+      resolve(user);
+    }
+  }).catch(err => {
+    // TODO: Toast error messages
+    reject(json.message);
+  });
+
 
     return removeMovie.then(user => {
       dispatch(removeFromMyMoviesSuccess(movie, user));
