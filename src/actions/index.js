@@ -134,7 +134,7 @@ export const addToMyMovies = (movie, user) => {
     }
   }).catch(err => {
     // TODO: Toast error messages
-    reject(json.message);
+    reject(err.response.data);
   });
 
 
@@ -181,7 +181,7 @@ export const removeFromMyMovies = (movie, user) => {
     }
   }).catch(err => {
     // TODO: Toast error messages
-    reject(json.message);
+    reject(err.response.data);
   });
 
 
