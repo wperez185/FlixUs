@@ -121,7 +121,8 @@ export const addToMyMovies = (movie, user) => {
       axios('/api/users/add-movie', {
         method: 'POST',
         body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json', 'Authorization': token }
+        headers: { 'Content-Type': 'application/json', 'Authorization': token },
+        withCredentials: true
       })
       .then(response => response.json())
       .then(json => {
@@ -167,7 +168,8 @@ export const removeFromMyMovies = (movie, user) => {
       axios('/api/users/remove-movie', {
         method: 'POST',
         body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json', 'Authorization': token }
+        headers: { 'Content-Type': 'application/json', 'Authorization': token },
+        withCredentials: true
       })
       .then(response => response.json())
       .then(json => {
