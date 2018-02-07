@@ -118,7 +118,7 @@ export const addToMyMovies = (movie, user) => {
     const token = user.token;
 
     const addMovie = new Promise((resolve, reject) => {
-      fetch('/api/users/add-movie', {
+      axios('/api/users/add-movie', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },
@@ -165,7 +165,7 @@ export const removeFromMyMovies = (movie, user) => {
     const token = user.token;
 
     const removeMovie = new Promise((resolve, reject) => {
-      fetch('/api/users/remove-movie', {
+      axios('/api/users/remove-movie', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },
