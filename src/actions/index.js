@@ -125,7 +125,7 @@ export const addToMyMovies = (movie, user) => {
         withCredentials: true
       }).then(response => {
     if (response.status === 201) {
-      const { user } = response.data;
+      const user = response.data;
       if (typeof user.movies === 'string') {
         user.movies = JSON.parse(user.movies);
       }
@@ -172,7 +172,7 @@ export const removeFromMyMovies = (movie, user) => {
         withCredentials: true
       }).then(response => {
     if (response.status === 201) {
-      const { user } = response.data;
+      const user = response.data;
       if (typeof user.movies === 'string') {
         user.movies = JSON.parse(user.movies);
       }
